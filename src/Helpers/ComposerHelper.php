@@ -23,7 +23,7 @@ class ComposerHelper
     {
         if (!self::$composerVendorClassLoader) {
             $loaders = ClassLoader::getRegisteredLoaders();
-            $vendorDir = realpath(__DIR__ . '/../../../../../../../vendor');
+            $vendorDir = realpath(__DIR__ . '/../../../../../vendor');
             self::$composerVendorClassLoader = $loaders[$vendorDir];
         }
         return self::$composerVendorClassLoader;
