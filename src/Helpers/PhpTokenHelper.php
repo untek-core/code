@@ -18,7 +18,7 @@ class PhpTokenHelper
         $collection = new Collection();
         $tokens = token_get_all($code, TOKEN_PARSE);
         foreach ($tokens as &$token) {
-            $tokenTypeId = is_array($token) ? $token[0] : null;
+            $tokenTypeId = is_array($token) ? $token[0] : 262;
             $tokenCode = is_array($token) ? $token[1] : $token;
             $tokenEntity = new PhpTokenEntity();
             $tokenEntity->setId($tokenTypeId);
