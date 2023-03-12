@@ -26,8 +26,10 @@ class PropertyAccess
     {
         if (empty(self::$builder)) {
             self::$builder = new PropertyAccessorBuilder();
-            $cacheItemPool = self::getCacheItemPool();
-            self::$builder->setCacheItemPool($cacheItemPool);
+            if(class_exists(AdapterInterface::class)) {
+                $cacheItemPool = self::getCacheItemPool();
+                self::$builder->setCacheItemPool($cacheItemPool);
+            }
         }
         return self::$builder;
     }
