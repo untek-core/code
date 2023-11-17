@@ -3,6 +3,7 @@
 namespace Untek\Core\Code\Helpers;
 
 use Composer\Autoload\ClassLoader;
+use http\Exception\RuntimeException;
 use Untek\Core\Arr\Helpers\ArrayHelper;
 use Untek\Core\Code\Exceptions\NotFoundDependencyException;
 
@@ -72,6 +73,10 @@ class ComposerHelper
         $path = str_replace('/', '\\', $path);
         $paths = self::find($path);
         $resPath = ArrayHelper::first($paths);
+
+        if(empty($resPath)) {
+            throw new \Exception('Bad namespace');
+        }
 /*if(is_null($resPath)) {
 //    dump($path, $paths);
     return null;
