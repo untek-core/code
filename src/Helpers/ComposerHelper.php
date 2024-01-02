@@ -63,6 +63,35 @@ class ComposerHelper
         self::getComposerVendorClassLoader()->addPsr4($namespace . '\\', $path);
     }
 
+    public static function getPsr4PathStrict($path)
+    {
+//        dd(get_declared_classes());
+//        $directories = collect(get_declared_classes())
+//            // filter only those that begin with 'MyVendor\MyPackage'
+//            ->filter(function ($item, $key) use ($path) {
+//                dd($item, $key);
+//                // put a backslash to the end of the namespace (and escape it) if needed
+//                return \Illuminate\Support\Str::startsWith($item, $path);
+//            })
+//            // get reflection class, then get filename from it, then just the dirname part
+//            /*->map(function ($item) {
+//                return (string) Str::of((new \ReflectionClass($item))->getFileName())->dirname();
+//            })
+//            // remove duplicates
+//            ->unique()*/
+//            ->dump();
+//        dd($directories);
+
+
+        $path = str_replace('/', '\\', $path);
+        $autoloadPsr4 = self::getComposerVendorClassLoader()->getPrefixesPsr4();
+        foreach ($autoloadPsr4 as $key => $item) {
+            dump($key, $item, $path);
+        }
+//        \Illuminate\Support\Str::startsWith($item, 'MyVendor\MyPackage')
+        dd($path, $autoloadPsr4);
+    }
+    
     /**
      * Получить имя директории из namespace
      * @param $path
@@ -72,7 +101,7 @@ class ComposerHelper
     {
         $path = str_replace('/', '\\', $path);
         $paths = self::find($path);
-        $resPath = ArrayHelper::first($paths);
+        $resPath = ArrayHelper::last($paths);
 
         if(empty($resPath)) {
             throw new \Exception('Bad namespace');
@@ -88,23 +117,25 @@ class ComposerHelper
 
     private static function find($path): array
     {
-        $pathItems = explode('\\', $path);
+        $pathItems = $pathItems1 = explode('\\', $path);
         $paths = [];
         $prependPath = '';
         $autoloadPsr4 = self::getComposerVendorClassLoader()->getPrefixesPsr4();
         for ($i = 0; $i <= count($pathItems) - 1; $i++) {
             $prependPath .= $pathItems[$i] . '\\';
-            unset($pathItems[$i]);
+            unset($pathItems1[$i]);
             $dirs = ArrayHelper::getValue($autoloadPsr4, $prependPath);
+//            dump($prependPath, $dirs);
             if ($dirs) {
                 foreach ($dirs as $dir) {
-                    $relativeDir = implode('\\', $pathItems);
+                    $relativeDir = implode('\\', $pathItems1);
                     $path = trim($dir . '\\' . $relativeDir, '\\');
                     $absolutPath = $prependPath . $relativeDir;
                     $paths[$absolutPath] = $path;
                 }
             }
         }
+//        dump($paths);
         return $paths;
     }
 }
