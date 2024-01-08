@@ -8,6 +8,20 @@ class PhpHelper
 {
 
     /**
+     * Checks if the given name is a valid PHP variable name.
+     *
+     * @see http://php.net/manual/en/language.variables.basics.php
+     *
+     * @param $name string
+     *
+     * @return bool
+     */
+    public static function isValidPhpVariableName($name)
+    {
+        return (bool) preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $name, $matches);
+    }
+    
+    /**
      * Проверяет, зарезервированно ли имя в PHP.
      *
      * @param string $name
