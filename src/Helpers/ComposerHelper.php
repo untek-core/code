@@ -112,7 +112,7 @@ class ComposerHelper
 }*/
         $resPath = str_replace('\\', '/', $resPath);
 
-        return realpath($resPath);
+        return $resPath;
     }
 
     private static function find($path): array
